@@ -33,7 +33,7 @@ jobs:
         fi
         echo "PUSH_DOCKER_ENDPOINT=$GITHUB_USERNAME/weather-station:$ENV" >> "$GITHUB_ENV"
 
-    - name: Clokning the main repo
+    - name: Cloning the repo
       uses: actions/checkout@v1
 
     - name: Set up QEMU
