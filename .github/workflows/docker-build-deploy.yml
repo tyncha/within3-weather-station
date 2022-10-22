@@ -1,0 +1,58 @@
+name: Deploy Infrastructure
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  tf_fmt:
+    name: Deploy Site
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Set env BRANCH
+      run: echo "BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
+
+    - name: Set env NEED
+        run: |
+          if [[ $BRANCH == 'master' && $GITHUB_EVENT_NAME == 'push' ]]; then
+              echo "ENV=prod" >> "$GITHUB_ENV"
+
+          elif [[ $BRANCH == 'dev' && $GITHUB_EVENT_NAME == 'push' ]]; then
+              echo "ENV=dev" >> "$GITHUB_ENV"
+          
+          elif [[ $BRANCH == 'qa' && $GITHUB_EVENT_NAME == 'push' ]]; then
+              echo "ENV=qa" >> "$GITHUB_ENV"
+          fi
+
+    - name: Clokning the main repo
+      uses: actions/checkout@v1
+
+    - name: Terraform Init
+      uses: hashicorp/terraform-github-actions/init@v0.4.0
+      env:
+        GITHUB_TOKEN: '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'
+        TF_ACTION_WORKING_DIR: 'terraform'
+        AWS_ACCESS_KEY_ID:  'AKIAXL4JGBWVAWYF6U4Z'
+        AWS_SECRET_ACCESS_KEY:  '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'
+
+    - name: Terraform Validate
+      uses: hashicorp/terraform-github-actions/validate@v0.3.7
+
+    - name: Terraform Apply
+      uses: hashicorp/terraform-github-actions/apply@v0.4.0
+      env:
+        GITHUB_TOKEN: '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'
+        TF_ACTION_WORKING_DIR: 'terraform'
+        AWS_ACCESS_KEY_ID:  'AKIAXL4JGBWVAWYF6U4Z'
+        AWS_SECRET_ACCESS_KEY:  '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'
+
+    - name: Sync S3
+      uses: jakejarvis/s3-sync-action@master
+      env:
+        SOURCE_DIR: './src'
+        AWS_REGION: 'us-east-1'
+        AWS_S3_BUCKET: 'tyncha-bucket'
+        AWS_ACCESS_KEY_ID: 'AKIAXL4JGBWVAWYF6U4Z'
+        AWS_SECRET_ACCESS_KEY: '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'
