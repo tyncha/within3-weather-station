@@ -15,8 +15,23 @@ jobs:
       run: echo "BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
 
     - name: Set env NEED
-        run: |
-          echo $GITHUB_ENV
+      run: |
+        echo $GITHUB_ENV
+        # export GITHUB_USERNAME="${{ github.actor }}"
+        if [[ $BRANCH == 'master' && $GITHUB_EVENT_NAME == 'push' ]]; then
+            echo "ENV=prod" >> "$GITHUB_ENV"
+            export ENV=prod
+
+        elif [[ $BRANCH == 'dev' && $GITHUB_EVENT_NAME == 'push' ]]; then
+            echo "ENV=dev" >> "$GITHUB_ENV"
+            export ENV=dev
+
+        elif [[ $BRANCH == 'qa' && $GITHUB_EVENT_NAME == 'push' ]]; then
+            echo "ENV=qa" >> "$GITHUB_ENV"
+            export ENV=qa
+
+        fi
+        # echo "PUSH_DOCKER_ENDPOINT=$GITHUB_USERNAME/weather-station:$ENV" >> "$GITHUB_ENV"
 
     - name: Clokning the main repo
       uses: actions/checkout@v1
