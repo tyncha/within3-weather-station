@@ -18,6 +18,7 @@ jobs:
       run: |
         echo $GITHUB_ENV
         export GITHUB_USERNAME="${{ github.actor }}"
+        
         if [[ $BRANCH == 'master' && $GITHUB_EVENT_NAME == 'push' ]]; then
             echo "ENV=prod" >> "$GITHUB_ENV"
             export ENV=prod
@@ -32,6 +33,7 @@ jobs:
 
         fi
         echo "PUSH_DOCKER_ENDPOINT=$GITHUB_USERNAME/weather-station:$ENV" >> "$GITHUB_ENV"
+        echo $GITHUB_ENV
 
     - name: Cloning the repo
       uses: actions/checkout@v1
