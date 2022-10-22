@@ -34,7 +34,6 @@ jobs:
 
         fi
         echo "PUSH_DOCKER_ENDPOINT=$GITHUB_USERNAME/weather-station:$ENV" >> "$GITHUB_ENV"
-        echo $GITHUB_ENV
 
     - name: Cloning the repo
       uses: actions/checkout@v1
@@ -56,7 +55,7 @@ jobs:
       with:
         context: deployments/docker
         push: true
-        tags: $PUSH_DOCKER_ENDPOINT
+        tags: tyncha/weather-station:prod
 
     - name: Terraform Init
       uses: hashicorp/terraform-github-actions/init@v0.4.0
