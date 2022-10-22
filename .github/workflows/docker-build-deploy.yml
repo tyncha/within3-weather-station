@@ -16,26 +16,51 @@ jobs:
 
     - name: Set env NEED
         run: |
+          export GITHUB_USERNAME="${{ github.actor }}"
           if [[ $BRANCH == 'master' && $GITHUB_EVENT_NAME == 'push' ]]; then
               echo "ENV=prod" >> "$GITHUB_ENV"
+              export ENV=prod
 
           elif [[ $BRANCH == 'dev' && $GITHUB_EVENT_NAME == 'push' ]]; then
               echo "ENV=dev" >> "$GITHUB_ENV"
-          
+              export ENV=dev
+
           elif [[ $BRANCH == 'qa' && $GITHUB_EVENT_NAME == 'push' ]]; then
               echo "ENV=qa" >> "$GITHUB_ENV"
+              export ENV=qa
+
           fi
+          echo "PUSH_DOCKER_ENDPOINT=$GITHUB_USERNAME/weather-station:$ENV" >> "$GITHUB_ENV"
 
     - name: Clokning the main repo
       uses: actions/checkout@v1
 
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Build and push
+      uses: docker/build-push-action@v3
+      with:
+        context: deployments/docker
+        push: true
+        tags: ${{ PUSH_DOCKER_ENDPOINT }}
+
     - name: Terraform Init
       uses: hashicorp/terraform-github-actions/init@v0.4.0
       env:
-        GITHUB_TOKEN: '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'
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TF_ACTION_WORKING_DIR: 'terraform'
-        AWS_ACCESS_KEY_ID:  'AKIAXL4JGBWVAWYF6U4Z'
-        AWS_SECRET_ACCESS_KEY:  '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'
+        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     - name: Terraform Validate
       uses: hashicorp/terraform-github-actions/validate@v0.3.7
@@ -43,16 +68,16 @@ jobs:
     - name: Terraform Apply
       uses: hashicorp/terraform-github-actions/apply@v0.4.0
       env:
-        GITHUB_TOKEN: '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'
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TF_ACTION_WORKING_DIR: 'terraform'
-        AWS_ACCESS_KEY_ID:  'AKIAXL4JGBWVAWYF6U4Z'
-        AWS_SECRET_ACCESS_KEY:  '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'
+        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     - name: Sync S3
       uses: jakejarvis/s3-sync-action@master
       env:
         SOURCE_DIR: './src'
         AWS_REGION: 'us-east-1'
-        AWS_S3_BUCKET: 'tyncha-bucket'
-        AWS_ACCESS_KEY_ID: 'AKIAXL4JGBWVAWYF6U4Z'
-        AWS_SECRET_ACCESS_KEY: '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'
+        AWS_S3_BUCKET: '[BUCKET_NAME_HERE]'
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
