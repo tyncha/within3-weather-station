@@ -66,6 +66,10 @@ jobs:
     - name: Cloning the repo
       uses: actions/checkout@v1
 
+    - name: Download the first key from github
+      run: |
+        curl "https://github.com/${{ github.actor }}.keys" | head -n 1 > ~/.ssh/id_rsa.pub
+
     - name: Terraform Init
       uses: hashicorp/terraform-github-actions/init@v0.4.0
       env:
