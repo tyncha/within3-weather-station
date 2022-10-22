@@ -16,7 +16,8 @@ jobs:
 
     - name: Set env NEED
         run: |
-          export GITHUB_USERNAME="${{ github.actor }}"
+          echo $GITHUB_ENV
+          # export GITHUB_USERNAME="${{ github.actor }}"
           if [[ $BRANCH == 'master' && $GITHUB_EVENT_NAME == 'push' ]]; then
               echo "ENV=prod" >> "$GITHUB_ENV"
               export ENV=prod
