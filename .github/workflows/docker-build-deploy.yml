@@ -7,7 +7,7 @@ on:
 
 jobs:
   tf_fmt:
-    name: Deploy Site
+    name: Docker build and Deploy pipeline
     runs-on: ubuntu-latest
     steps:
 
