@@ -6,7 +6,7 @@ locals {
 
 resource "aws_instance" "web" {
   ami                         = "ami-01179af28ec82e898"
-  instance_type               = "t2.micro"
+  instance_type               = "t2.medium"
   iam_instance_profile        = "${aws_iam_instance_profile.ec2_profile.name}"
   associate_public_ip_address = "true"
   key_name                    = "${aws_key_pair.weather_key.key_name}"
