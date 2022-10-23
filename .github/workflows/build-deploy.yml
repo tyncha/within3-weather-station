@@ -86,6 +86,8 @@ jobs:
         }
         EOF
 
+        cat deployments/terraform/backend.tf
+
 
     - name: Terraform Init
       uses: hashicorp/terraform-github-actions/init@v0.4.0
