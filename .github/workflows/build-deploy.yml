@@ -87,6 +87,7 @@ jobs:
   second_pipeline:
     name: Application deployment
     runs-on: ubuntu-latest
+    needs: docker_build
     steps:
 
     - name: Cloning the repo
