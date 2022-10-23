@@ -10,8 +10,7 @@ WORKDIR /app
 RUN npm install
 
 # Tell that this image is going to Open a Port 
-EXPOSE 3000
+EXPOSE 8080
 
 # Default Command to launch the Application
 CMD ["npm", "start"]
-

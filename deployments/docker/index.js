@@ -13,6 +13,4 @@ app.get( "/", ( req, res ) => {
 } );
 
 // start the Express server
-app.listen( port, () => {
-    console.log( `server started at http://localhost:${ port }` );
-} );
+app.listen(port, '0.0.0.0');
