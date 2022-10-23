@@ -1,4 +1,4 @@
-resource "aws_security_group" "example-new1" {
+resource "aws_security_group" "example-new2" {
   name        = "weather-new1"
   description = "Allow TLS inbound traffic"
 
