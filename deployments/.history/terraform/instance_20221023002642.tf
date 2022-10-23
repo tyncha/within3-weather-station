@@ -7,6 +7,6 @@ resource "aws_instance" "web" {
   vpc_security_group_ids      = ["${aws_security_group.example-new1.id}"]
   availability_zone           = "us-east-1a"
   tags = {
-    Name = "weater777"
+    Name = "weater77"
   }
 }
