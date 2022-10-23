@@ -16,18 +16,15 @@ jobs:
       environment: ${{ steps.get_enviroment.outputs.environment }}
 
     steps:
-    - name: Get the branch
+    - name: Setting multiple environment variables
       run: |
         echo "BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
-
-    - id: get_enviroment
-      name: Set env NEED
-      run: |
-        set -e
-        echo $GITHUB_ENV
-        export GITHUB_USERNAME="${{ github.actor }}"
+        echo "GITHUB_USERNAME="${{ github.actor }}" >> "$GITHUB_ENV"
         echo "COMMIT_HASH=$(echo $GITHUB_SHA | cut -c1-7)" >> "$GITHUB_ENV"
-        
+
+    - name: Setting the environment to deploy
+      id: get_enviroment
+      run: |
         if [[ $BRANCH == 'master' && $GITHUB_EVENT_NAME == 'push' ]]; then
             echo "ENV=prod" >> "$GITHUB_ENV"
             ENV=prod
@@ -41,14 +38,14 @@ jobs:
             ENV=qa
             
         fi
-        echo "environment=$ENV" >> "$GITHUB_OUTPUT"
+        echo "environment=$ENV" > "$GITHUB_OUTPUT"
 
-    - id: get_docker_image
-      name: Set env NEED
+    - name: Setting the docker image name
+      id: get_docker_image
       run: |
         set -e
         export GITHUB_USERNAME="${{ github.actor }}"
-        echo "image=$GITHUB_USERNAME/weather-station:$ENV-$COMMIT_HASH" >> "$GITHUB_OUTPUT"
+        echo "image=$GITHUB_USERNAME/weather-station:$ENV-$COMMIT_HASH" > "$GITHUB_OUTPUT"
 
     - name: Cloning the repo
       uses: actions/checkout@v1
@@ -70,13 +67,13 @@ jobs:
       with:
         context: deployments/docker
         push: true
-        tags: ${{ steps.get_docker_image.outputs.docker_image }}
+        tags: ${{ steps.get_docker_image.outputs.image }}
       
     - name: OutPut the results
       run: |
         echo -e <<EOF
         ############# Docker image #############
-        Docker image: ${{ steps.get_docker_image.outputs.docker_image }}
+        Docker image: ${{ steps.get_docker_image.outputs.image }}
 
         ############# Environment #############
         Deployment environment: ${{ steps.get_enviroment.outputs.environment }}
@@ -112,7 +109,7 @@ jobs:
     - name: Generate the configs
       run: |
         echo 'Creating the backend.tf'
-        echo -e ${{ needs.docker_build.outputs.docker_image }}
+        echo -e ${{ needs.docker_build.outputs.image }}
         echo -e ${{ needs.docker_build.outputs.environment }}
 
         cat <<EOF > deployments/terraform/backend.tf
