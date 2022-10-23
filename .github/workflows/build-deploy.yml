@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       environment: ${{ steps.get_outputs.outputs.environment }}
-      image: ${{ steps.get_outputs.outputs.docker_image }}
+      docker_image: ${{ steps.get_outputs.outputs.docker_image }}
 
     steps:
     - name: Setting multiple environment variables
@@ -103,7 +103,7 @@ jobs:
     - name: Generate the configs
       run: |
         echo 'Creating the backend.tf'
-        echo -e ${{ needs.docker_build.outputs.image }}
+        echo -e ${{ needs.docker_build.outputs.docker_image }}
         echo -e ${{ needs.docker_build.outputs.environment }}
 
         cat <<EOF > deployments/terraform/backend.tf
