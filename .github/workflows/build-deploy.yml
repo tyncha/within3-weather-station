@@ -10,12 +10,15 @@ jobs:
   tf_fmt:
     name: Docker build and Deploy pipeline
     runs-on: ubuntu-latest
+    outputs:
+      docker_image: ${{ steps.get_docker_image.outputs.docker_image }}
     steps:
 
     - name: Set env BRANCH
       run: echo "BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
 
-    - name: Set env NEED
+    - id: get_docker_image
+      name: Set env NEED
       run: |
         set -e
         echo $GITHUB_ENV
@@ -34,7 +37,7 @@ jobs:
             export ENV=qa
 
         fi
-        echo "PUSH_DOCKER_ENDPOINT=$GITHUB_USERNAME/weather-station:$ENV" >> "$GITHUB_ENV"
+        echo "docker_image=$GITHUB_USERNAME/weather-station:$ENV" >> "$GITHUB_OUTPUT"
 
     - name: Cloning the repo
       uses: actions/checkout@v1
@@ -56,7 +59,7 @@ jobs:
       with:
         context: deployments/docker
         push: true
-        tags: env.PUSH_DOCKER_ENDPOINT
+        tags: ${{ steps.docker_image.outputs.test }}
 
   second_pipeline:
     name: Application deployment
