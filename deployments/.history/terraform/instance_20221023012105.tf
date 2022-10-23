@@ -1,5 +1,5 @@
 resource "aws_instance" "web" {
-  ami                         = "ami-09d3b3274b6c5d4aa"
+  ami                         = "${data.aws_ami.ubuntu}""ami-09d3b3274b6c5d4aa"
   instance_type               = "t2.micro"
   iam_instance_profile        = "${aws_iam_instance_profile.ec2_profile}"
   associate_public_ip_address = "true"
