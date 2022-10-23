@@ -14,8 +14,6 @@ jobs:
     outputs:
       environment: ${{ steps.get_outputs.outputs.environment }}
       commit_hash: ${{ steps.get_outputs.outputs.commit_hash }}
-      username: ${{ steps.get_outputs.outputs.username }}
-      docker_image: ${{ steps.get_outputs.outputs.docker_image }}
 
     steps:
     - name: Setting multiple environment variables
@@ -103,11 +101,15 @@ jobs:
 
     - name: Cloning the repo
       uses: actions/checkout@v1
+
+    - name: Setting multiple environment variables
+      run: |
+        echo "GITHUB_USERNAME=${{ github.actor }}" >> "$GITHUB_ENV"
     
     - name: Generate the configs
       run: |
         echo 'Creating the backend.tf'
-        echo -e ${{ needs.docker_build.outputs.docker_image }}
+        echo "$GITHUB_USERNAME/weather-station:${{ needs.docker_build.outputs.environment }}-${{ needs.docker_build.outputs.commit_hash }}"
         echo -e ${{ needs.docker_build.outputs.environment }}
 
         cat <<EOF > deployments/terraform/backend.tf
