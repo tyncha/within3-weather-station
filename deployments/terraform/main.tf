@@ -15,6 +15,8 @@ resource "aws_instance" "web" {
   user_data                   = <<EOF
   #!/bin/bash
 
+  systemctl enable --now docker 
+
   ## Stoping the existing docker containers if exist
   docker stop $(docker ps -aq )
 
