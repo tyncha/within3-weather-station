@@ -135,7 +135,7 @@ jobs:
     - name: Terraform Apply
       uses: hashicorp/terraform-github-actions/apply@v0.4.0
       env:
-        TF_VAR_docker_image: "$GITHUB_USERNAME/weather-station:${{ needs.docker_build.outputs.environment }}-${{ needs.docker_build.outputs.commit_hash }}"
+        TF_VAR_docker_image: "${{ github.actor }}/weather-station:${{ needs.docker_build.outputs.environment }}-${{ needs.docker_build.outputs.commit_hash }}"
         TF_VAR_environment: ${{ needs.docker_build.outputs.environment }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TF_ACTION_WORKING_DIR: deployments/terraform
