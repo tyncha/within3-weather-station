@@ -40,7 +40,6 @@ jobs:
         fi
         echo "environment=$ENV" >> "$GITHUB_OUTPUT"
         echo "commit_hash=$COMMIT_HASH" >> "$GITHUB_OUTPUT"
-        echo "username=$GITHUB_USERNAME" >> "$GITHUB_OUTPUT"
         echo "docker_image=$GITHUB_USERNAME/weather-station:$ENV-$COMMIT_HASH" >> "$GITHUB_OUTPUT"
 
     - name: Cloning the repo
@@ -109,9 +108,6 @@ jobs:
     - name: Generate the configs
       run: |
         echo 'Creating the backend.tf'
-        echo "$GITHUB_USERNAME/weather-station:${{ needs.docker_build.outputs.environment }}-${{ needs.docker_build.outputs.commit_hash }}"
-        echo -e ${{ needs.docker_build.outputs.environment }}
-
         cat <<EOF > deployments/terraform/backend.tf
         terraform {
           backend "s3" {
@@ -139,7 +135,7 @@ jobs:
     - name: Terraform Apply
       uses: hashicorp/terraform-github-actions/apply@v0.4.0
       env:
-        TF_VAR_docker_image: ${{ needs.docker_build.outputs.docker_image }}
+        TF_VAR_docker_image: "$GITHUB_USERNAME/weather-station:${{ needs.docker_build.outputs.environment }}-${{ needs.docker_build.outputs.commit_hash }}"
         TF_VAR_environment: ${{ needs.docker_build.outputs.environment }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TF_ACTION_WORKING_DIR: deployments/terraform
