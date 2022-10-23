@@ -4,18 +4,22 @@ on:
   push:
     branches:
       - master
-      - test
+      - develop
+      - qa
 
 jobs:
-  tf_fmt:
+  docker_build:
     name: Docker build and Deploy pipeline
     runs-on: ubuntu-latest
     outputs:
       docker_image: ${{ steps.get_docker_image.outputs.docker_image }}
+      environment: ${{ steps.get_enviroment.outputs.environment }}
+  
     steps:
-
-    - name: Set env BRANCH
-      run: echo "BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
+    - name: get_enviroment
+      run: |
+        echo "BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
+        echo "environment=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_OUTPUT
 
     - id: get_docker_image
       name: Set env NEED
@@ -28,7 +32,7 @@ jobs:
             echo "ENV=prod" >> "$GITHUB_ENV"
             export ENV=prod
 
-        elif [[ $BRANCH == 'dev' && $GITHUB_EVENT_NAME == 'push' ]]; then
+        elif [[ $BRANCH == 'develop' && $GITHUB_EVENT_NAME == 'push' ]]; then
             echo "ENV=dev" >> "$GITHUB_ENV"
             export ENV=dev
 
@@ -68,6 +72,26 @@ jobs:
 
     - name: Cloning the repo
       uses: actions/checkout@v1
+    
+    - name: Generate the configs
+      run: |
+        echo 'Create the custom docker image'
+        cat <<EOF > deployment.tfvars
+        environment = "${{ needs.docker_build.outputs.environment }}"
+        docker_image = "${{ needs.docker_build.outputs.docker_image }}" 
+        EOF
+
+        echo 'Creating the backend.tf'
+        cat <<EOF > backend.tf
+        terraform {
+          backend "s3" {
+            bucket = "tyncha-bucket"
+            key    = "${{ needs.docker_build.outputs.environment }}/state"
+            region = "us-east-1"
+          }
+        }
+        EOF
+
 
     - name: Terraform Init
       uses: hashicorp/terraform-github-actions/init@v0.4.0

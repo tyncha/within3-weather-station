@@ -4,11 +4,20 @@ resource "aws_instance" "web" {
   iam_instance_profile        = "${aws_iam_instance_profile.ec2_profile.name}"
   associate_public_ip_address = "true"
   key_name                    = "${aws_key_pair.weather_key.key_name}"
-  user_data                   = "${file("userdata_file.sh")}"
   vpc_security_group_ids      = ["${aws_security_group.example-new2.id}"]
   availability_zone           = "us-east-1a"
+  user_data                   = <<EOF
+  #!/bin/bash
+
+  ## Stoping the existing docker containers if exist
+  docker stop $(docker ps -aq )
+
+  ## Starting the new docker container
+  docker run -ti -d -p 80:3000 ${var.docker_image}
+  EOF 
   tags = {
     Name = "weather7"
+    environment = var.environment
   }
 }
 
