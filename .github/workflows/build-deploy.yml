@@ -26,6 +26,7 @@ jobs:
         set -e
         echo $GITHUB_ENV
         export GITHUB_USERNAME="${{ github.actor }}"
+        echo "COMMIT_HASH=$(git rev-parse --short "$GITHUB_SHA")" >> "$GITHUB_ENV"
         
         if [[ $BRANCH == 'master' && $GITHUB_EVENT_NAME == 'push' ]]; then
             echo "ENV=prod" >> "$GITHUB_ENV"
@@ -47,7 +48,7 @@ jobs:
       run: |
         set -e
         export GITHUB_USERNAME="${{ github.actor }}"
-        echo "docker_image=$GITHUB_USERNAME/weather-station:$ENV" >> "$GITHUB_OUTPUT"
+        echo "docker_image=$GITHUB_USERNAME/weather-station:$ENV-$COMMIT_HASH" >> "$GITHUB_OUTPUT"
 
     - name: Cloning the repo
       uses: actions/checkout@v1
