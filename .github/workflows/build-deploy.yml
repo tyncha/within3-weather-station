@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       docker_image: ${{ steps.get_docker_image.outputs.docker_image }}
-      environment: 'Hello World'
+      environment: ${{ steps.get_enviroment.outputs.environment }}
 
     steps:
     - name: get_enviroment
@@ -110,3 +110,12 @@ jobs:
         AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
+    - name: OutPut the results
+      run: |
+        echo -e <<EOF
+        ############# Docker image #############
+        ${{ steps.get_docker_image.outputs.docker_image }}
+
+        ############# Environment #############
+        ${{ steps.get_enviroment.outputs.environment }}
+        EOF
