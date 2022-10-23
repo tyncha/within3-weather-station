@@ -12,8 +12,8 @@ jobs:
     name: Docker build and Deploy pipeline
     runs-on: ubuntu-latest
     outputs:
-      image: ${{ steps.get_outputs.outputs.docker_image }}
       environment: ${{ steps.get_outputs.outputs.environment }}
+      image: ${{ steps.get_outputs.outputs.docker_image }}
 
     steps:
     - name: Setting multiple environment variables
