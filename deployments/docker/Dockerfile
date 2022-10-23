@@ -1,7 +1,10 @@
-FROM node:10.15-alpine
-LABEL author=”tyncht”
+FROM node 
+
+LABEL author="tyncht"
 # COPY all the files from Current Directory into the Container
-COPY . .
+
+COPY . /app
+WORKDIR /app
 
 # Install the Project Dependencies like Express Framework
 RUN npm install
@@ -11,3 +14,4 @@ EXPOSE 3000
 
 # Default Command to launch the Application
 CMD ["npm", "start"]
+
