@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       environment: ${{ steps.get_outputs.outputs.environment }}
-      docker_image: 'this is testings'
+      docker_image: ${{ steps.get_outputs.outputs.docker_image }}
 
     steps:
     - name: Setting multiple environment variables
