@@ -40,7 +40,7 @@ jobs:
             export ENV=qa
 
         fi
-        echo "enviroment=$ENV" >> "$GITHUB_OUTPUT"
+        echo "environment=$ENV" >> "$GITHUB_OUTPUT"
 
     - id: get_docker_image
       name: Set env NEED
