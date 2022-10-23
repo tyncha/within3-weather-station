@@ -19,7 +19,7 @@ jobs:
     - name: Setting multiple environment variables
       run: |
         echo "BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
-        echo "GITHUB_USERNAME="${{ github.actor }}" >> "$GITHUB_ENV"
+        echo "GITHUB_USERNAME=${{ github.actor }}" >> "$GITHUB_ENV"
         echo "COMMIT_HASH=$(echo $GITHUB_SHA | cut -c1-7)" >> "$GITHUB_ENV"
 
     - name: Setting the environment to deploy
