@@ -5,7 +5,7 @@ locals {
 
 
 resource "aws_instance" "web" {
-  ami                         = "ami-01179af28ec82e898"
+  ami                         = "ami-0f3f22c20d40aeb53"
   instance_type               = "t2.medium"
   iam_instance_profile        = "${aws_iam_instance_profile.ec2_profile.name}"
   associate_public_ip_address = "true"
@@ -21,7 +21,7 @@ resource "aws_instance" "web" {
   docker stop $(docker ps -aq )
 
   ## Starting the new docker container
-  docker run -ti -d -p 80:3000 ${var.docker_image}
+  docker run -ti -d -p 80:8080 ${var.docker_image}
   EOF
 
   tags = {
