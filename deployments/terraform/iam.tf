@@ -1,5 +1,5 @@
 resource "aws_iam_role_policy" "ec2_policy" {
-  name = "ec2_policy"
+  name = "${local.prefix}-policy"
   role = aws_iam_role.ec2_role.id
 
   # Terraform's "jsonencode" function converts a
@@ -18,7 +18,7 @@ resource "aws_iam_role_policy" "ec2_policy" {
 }
 
 resource "aws_iam_role" "ec2_role" {
-  name = "ec2_role"
+  name = "${local.prefix}-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -37,6 +37,6 @@ resource "aws_iam_role" "ec2_role" {
 
 
 resource "aws_iam_instance_profile" "ec2_profile" {
-  name = "new_ec2_profile"
+  name = "${local.prefix}-profile"
   role = aws_iam_role.ec2_role.name
 }
