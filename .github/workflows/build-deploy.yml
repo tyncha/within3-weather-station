@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       environment: ${{ steps.get_outputs.outputs.environment }}
+      commit_hash: ${{ steps.get_outputs.outputs.commit_hash }}
       docker_image: ${{ steps.get_outputs.outputs.docker_image }}
 
     steps:
@@ -39,8 +40,8 @@ jobs:
             
         fi
         echo "environment=$ENV" >> "$GITHUB_OUTPUT"
-        echo "common_hash=$GITHUB_ENV" >> "$GITHUB_OUTPUT"
-        echo "common_hash=$GITHUB_USERNAME" >> "$GITHUB_OUTPUT"
+        echo "commit_hash=$GITHUB_ENV" >> "$GITHUB_OUTPUT"
+        echo "username=$GITHUB_USERNAME" >> "$GITHUB_OUTPUT"
         echo "docker_image=$GITHUB_USERNAME/weather-station:$ENV-$COMMIT_HASH" >> "$GITHUB_OUTPUT"
 
     - name: Cloning the repo
