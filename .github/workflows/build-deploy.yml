@@ -39,7 +39,8 @@ jobs:
             
         fi
         echo "environment=$ENV" >> "$GITHUB_OUTPUT"
-        echo "docker_image=$GITHUB_USERNAME/weather-station:$ENV-$COMMIT_HASH" >> "$GITHUB_OUTPUT"
+        # echo "docker_image=$GITHUB_USERNAME/weather-station:$ENV-$COMMIT_HASH" >> "$GITHUB_OUTPUT"
+        echo "::set-output name=docker_image::$GITHUB_USERNAME/weather-station:$ENV-$COMMIT_HASH"
 
     - name: Cloning the repo
       uses: actions/checkout@v1
