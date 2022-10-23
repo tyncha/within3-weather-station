@@ -29,13 +29,16 @@ jobs:
         
         if [[ $BRANCH == 'master' && $GITHUB_EVENT_NAME == 'push' ]]; then
             echo "ENV=prod" >> "$GITHUB_ENV"
+            ENV=prod
 
         elif [[ $BRANCH == 'develop' && $GITHUB_EVENT_NAME == 'push' ]]; then
             echo "ENV=dev" >> "$GITHUB_ENV"
+            ENV=dev
 
         elif [[ $BRANCH == 'qa' && $GITHUB_EVENT_NAME == 'push' ]]; then
             echo "ENV=qa" >> "$GITHUB_ENV"
-
+            ENV=qa
+            
         fi
         echo "environment=$ENV" >> "$GITHUB_OUTPUT"
 
