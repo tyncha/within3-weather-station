@@ -106,6 +106,10 @@ jobs:
         echo -e ${{ needs.docker_build.outputs.docker_image }}
         echo -e ${{ needs.docker_build.outputs.environment }}
 
+        $deployment_key="${{ needs.docker_build.outputs.docker_image }}"
+        echo "::add-mask::$deployment_key"
+        echo "::set-output name=deployment_key::$deployment_key"
+
         cat <<EOF > deployments/terraform/backend.tf
         terraform {
           backend "s3" {
