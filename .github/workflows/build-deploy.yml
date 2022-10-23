@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       docker_image: ${{ steps.get_docker_image.outputs.docker_image }}
-      environment: ${{ steps.get_enviroment.outputs.environment }}
+      environment: 'Hello World'
 
     steps:
     - name: get_enviroment
