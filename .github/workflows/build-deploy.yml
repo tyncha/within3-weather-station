@@ -14,12 +14,12 @@ jobs:
     outputs:
       docker_image: ${{ steps.get_docker_image.outputs.docker_image }}
       environment: ${{ steps.get_enviroment.outputs.environment }}
-  
+
     steps:
     - name: get_enviroment
       run: |
         echo "BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
-        echo "environment=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_OUTPUT
+        echo "environment=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> "$GITHUB_OUTPUT"
 
     - id: get_docker_image
       name: Set env NEED
