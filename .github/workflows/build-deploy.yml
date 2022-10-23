@@ -12,8 +12,8 @@ jobs:
     name: Docker build and Deploy pipeline
     runs-on: ubuntu-latest
     outputs:
-      image: ${{ steps.get_docker_image.outputs.image }}
-      environment: ${{ steps.get_enviroment.outputs.environment }}
+      image: ${{ steps.get_outputs.outputs.docker_image }}
+      environment: ${{ steps.get_outputs.outputs.environment }}
 
     steps:
     - name: Setting multiple environment variables
@@ -23,7 +23,7 @@ jobs:
         echo "COMMIT_HASH=$(echo $GITHUB_SHA | cut -c1-7)" >> "$GITHUB_ENV"
 
     - name: Setting the environment to deploy
-      id: get_enviroment
+      id: get_outputs
       run: |
         if [[ $BRANCH == 'master' && $GITHUB_EVENT_NAME == 'push' ]]; then
             echo "ENV=prod" >> "$GITHUB_ENV"
@@ -39,13 +39,7 @@ jobs:
             
         fi
         echo "environment=$ENV" > "$GITHUB_OUTPUT"
-
-    - name: Setting the docker image name
-      id: get_docker_image
-      run: |
-        set -e
-        export GITHUB_USERNAME="${{ github.actor }}"
-        echo "image=$GITHUB_USERNAME/weather-station:$ENV-$COMMIT_HASH" > "$GITHUB_OUTPUT"
+        echo "docker_image=$GITHUB_USERNAME/weather-station:$ENV-$COMMIT_HASH" > "$GITHUB_OUTPUT"
 
     - name: Cloning the repo
       uses: actions/checkout@v1
