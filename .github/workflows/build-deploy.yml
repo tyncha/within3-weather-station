@@ -39,8 +39,9 @@ jobs:
             
         fi
         echo "environment=$ENV" >> "$GITHUB_OUTPUT"
-        # echo "docker_image=$GITHUB_USERNAME/weather-station:$ENV-$COMMIT_HASH" >> "$GITHUB_OUTPUT"
-        echo "::set-output name=docker_image::$GITHUB_USERNAME/weather-station:$ENV-$COMMIT_HASH"
+        echo "common_hash=$GITHUB_ENV" >> "$GITHUB_OUTPUT"
+        echo "common_hash=$GITHUB_USERNAME" >> "$GITHUB_OUTPUT"
+        echo "docker_image=$GITHUB_USERNAME/weather-station:$ENV-$COMMIT_HASH" >> "$GITHUB_OUTPUT"
 
     - name: Cloning the repo
       uses: actions/checkout@v1
@@ -106,10 +107,6 @@ jobs:
         echo 'Creating the backend.tf'
         echo -e ${{ needs.docker_build.outputs.docker_image }}
         echo -e ${{ needs.docker_build.outputs.environment }}
-
-        $deployment_key="${{ needs.docker_build.outputs.docker_image }}"
-        echo "::add-mask::$deployment_key"
-        echo "::set-output name=deployment_key::$deployment_key"
 
         cat <<EOF > deployments/terraform/backend.tf
         terraform {
