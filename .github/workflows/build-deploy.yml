@@ -14,6 +14,7 @@ jobs:
     outputs:
       environment: ${{ steps.get_outputs.outputs.environment }}
       commit_hash: ${{ steps.get_outputs.outputs.commit_hash }}
+      username: ${{ steps.get_outputs.outputs.username }}
       docker_image: ${{ steps.get_outputs.outputs.docker_image }}
 
     steps:
