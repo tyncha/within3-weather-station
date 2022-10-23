@@ -81,7 +81,7 @@ jobs:
 
 
 
-        
+
         EOF
 
   second_pipeline:
@@ -95,6 +95,9 @@ jobs:
     - name: Generate the configs
       run: |
         echo 'Creating the backend.tf'
+        echo -e ${{ needs.docker_build.outputs.docker_image }}
+        echo -e ${{ needs.docker_build.outputs.environment }}
+
         cat <<EOF > deployments/terraform/backend.tf
         terraform {
           backend "s3" {
