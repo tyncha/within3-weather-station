@@ -61,13 +61,13 @@ jobs:
       with:
         context: deployments/docker
         push: true
-        tags: ${{ steps.get_docker_image.outputs.image }}
+        tags: ${{ steps.get_outputs.outputs.docker_image }}
       
     - name: OutPut the results
       run: |
         echo -e <<EOF
         ############# Docker image #############
-        Docker image: ${{ steps.get_docker_image.outputs.image }}
+        Docker image: ${{ steps.get_outputs.outputs.docker_image }}
 
         ############# Environment #############
         Deployment environment: ${{ steps.get_enviroment.outputs.environment }}
