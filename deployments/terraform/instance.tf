@@ -1,4 +1,4 @@
-resource "aws_instance" "weeatherapp" {
+resource "aws_instance" "web" {
   ami                         = "ami-09d3b3274b6c5d4aa"
   instance_type               = "t2.micro"
   associate_public_ip_address = "true"
@@ -7,9 +7,3 @@ resource "aws_instance" "weeatherapp" {
   vpc_security_group_ids      = ["${aws_security_group.example-new1.id}"]
   availability_zone           = "us-east-1a"
 }
-
-resource "aws_instance" "weatherappp" {
-  ami           = "ami-09d3b3274b6c5d4aa"
-  instance_type = "t2.micro"
-}
-
