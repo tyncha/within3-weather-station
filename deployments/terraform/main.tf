@@ -5,7 +5,7 @@ locals {
 
 
 resource "aws_instance" "web" {
-  ami                         = "ami-09d3b3274b6c5d4aa"
+  ami                         = "ami-01179af28ec82e898"
   instance_type               = "t2.micro"
   iam_instance_profile        = "${aws_iam_instance_profile.ec2_profile.name}"
   associate_public_ip_address = "true"
@@ -20,7 +20,8 @@ resource "aws_instance" "web" {
 
   ## Starting the new docker container
   docker run -ti -d -p 80:3000 ${var.docker_image}
-  EOF 
+  EOF
+
   tags = {
     Name = "weather7"
     environment = var.environment

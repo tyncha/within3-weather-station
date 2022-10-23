@@ -12,7 +12,7 @@ jobs:
     name: Docker build and Deploy pipeline
     runs-on: ubuntu-latest
     outputs:
-      docker_image: ${{ steps.get_docker_image.outputs.docker_image }}
+      image: ${{ steps.get_docker_image.outputs.image }}
       environment: ${{ steps.get_enviroment.outputs.environment }}
 
     steps:
@@ -48,7 +48,7 @@ jobs:
       run: |
         set -e
         export GITHUB_USERNAME="${{ github.actor }}"
-        echo "docker_image=$GITHUB_USERNAME/weather-station:$ENV-$COMMIT_HASH" >> "$GITHUB_OUTPUT"
+        echo "image=$GITHUB_USERNAME/weather-station:$ENV-$COMMIT_HASH" >> "$GITHUB_OUTPUT"
 
     - name: Cloning the repo
       uses: actions/checkout@v1
@@ -80,13 +80,25 @@ jobs:
 
         ############# Environment #############
         Deployment environment: ${{ steps.get_enviroment.outputs.environment }}
-
-
-
-
-
-
         EOF
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   second_pipeline:
     name: Application deployment
