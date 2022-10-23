@@ -31,6 +31,10 @@ resource "aws_instance" "web" {
 }
 
 
+resource "aws_eip" "lb" {
+  instance = aws_instance.web.id
+  vpc      = true
+}
 
 resource "aws_key_pair" "weather_key" {
   key_name   = "${local.prefix}-key"
