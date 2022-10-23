@@ -12,5 +12,7 @@ app.get( "/", ( req, res ) => {
     
 } );
 
-// start the Express server
-app.listen(port, '0.0.0.0');
+
+app.listen(port,'0.0.0.0',()=>{
+      console.log(`Server is listening on ${port} and binded 0.0.0.0 port`);
+})
