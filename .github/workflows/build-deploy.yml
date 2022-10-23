@@ -56,7 +56,7 @@ jobs:
       with:
         context: deployments/docker
         push: true
-        tags: tyncha/weather-station:prod
+        tags: env.PUSH_DOCKER_ENDPOINT
 
   second_pipeline:
     name: Application deployment
