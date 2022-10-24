@@ -23,3 +23,7 @@ cd deployments/terraform
 7. In order to deploy in `dev` environment you should create new `develop` branch and pipline automaticly picks up the code.
 
 8. In order to deploy in `qa` environment you should create new `qa` branch and pipline automaticly picks up the code.
+
+## Check the App ##
+
+1. Once all services created in AW go to the `EC2` dashboard in AWS console and open `Elastic IP` get that IP and check in your browser.
