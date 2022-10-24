@@ -8,7 +8,7 @@ if (process.env.ENV === 'prod') {
 
 // define a route handler for the default home page
 app.get( "/", ( req, res ) => {
-    res.send( `${port}# Hello! The weather in San Diego is sunny!` );
+    res.send( `Hello! The weather in San Diego is sunny!` );
     
 } );
 
