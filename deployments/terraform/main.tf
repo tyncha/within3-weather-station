@@ -2,8 +2,6 @@ locals {
   prefix = "${var.environment}-weather-station"
 }
 
-
-
 resource "aws_instance" "web" {
   ami                         = "ami-0f3f22c20d40aeb53"
   instance_type               = "t2.medium"
