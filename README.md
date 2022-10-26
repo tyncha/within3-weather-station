@@ -10,9 +10,9 @@ Here you will find everything you looking for to deploy within3-weather-station 
 
 ## Application deployment ##
 
-1. In order to deploy the app in AWS. You need to fork a within3-weather-station repository and clone itfrom tyncha github org, and then go to the
+1. In order to deploy the app in AWS. You need to fork a within3-weather-station repository and clone it, and then go to the
 ```
-https://github.com/tyncha/within3-weather-station
+https://github.com/<your repo>/within3-weather-station
 cd deployments/terraform
 ```
 2. In `terraform` directory open file `main.tf` in line 39 add your own public key `public_key = ""`
