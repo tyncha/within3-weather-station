@@ -9,13 +9,14 @@ Here you will find everything you looking for to deploy within3-weather-station 
 
 
 ## Application deployment ##
-1. In order to deploy the app in AWS. You need to clone a within3-weather-station repository from tyncha github org.
+
+1. In order to deploy the app in AWS. You need to fork a within3-weather-station repository and clone itfrom tyncha github org, and then go to the
 ```
 https://github.com/tyncha/within3-weather-station
 cd deployments/terraform
 ```
 2. In `terraform` directory open file `main.tf` in line 39 add your own public key `public_key = ""`
-3. Create own repo and `git add, git commit and git push` cloned `within3-weather-station` repo to you own new created repo
+3. Once you done go ahead `git add, git commit and git push` cloned `within3-weather-station` repo.
 4. Once pushed to your repo go to the `setting` of that repo, and then in dropdown options pick `actions`
 5. In opening `Action secrets`  page click  `New repository secret` and in name add `AWS_SECRET_ACCESS_KEY` in a value add value of your secret access key from aws, same with `AWS_ACCESS_KEY_ID` and `DOCKERHUB_USERNAME` as well `DOCKERHUB_TOKEN` at the end you should have 4 secrets.
 6. You can see in this documentation  https://docs.github.com/en/actions/security-guides/encrypted-secrets 
